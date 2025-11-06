@@ -1,24 +1,35 @@
-from fastapi import FastAPI, Query, Path
-import os
+# uvicorn main:app --host 0.0.0.0 --port $PORT
 import uvicorn
+import os
+from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-@app.get("/health")
-async def health_check():
-    return {"status": "ok"}
+app.add_middleware(
+CORSMiddleware,
+allow_origins=["*"],
+)
 
-@app.get("/ramen")
-async def hello():
-    return "짬뽕 보내요~"
+@app.get('/')
+async def read_root():
+    return {"Hello": "World"}
 
-@app.get("/order/{menu}/{spycy_lev}")
-async def hello(menu: str, spycy_lev: str ):
-    return menu + "を辛さ" + spycy_lev + "で予約しました。"
+@app.get('/order/apple')
+async def read_apple(color:str = Query(max_length=5)):
+    if color == "red":
+        ee = "🍎"
+    else:
+        ee = "🍏"
+    return {"msg":ee+"が注文されました。"}
 
-@app.get("/order/{menu}")
-async def hello(menu: str = Path(max_length=3), spycy_lev: str = Query(None, max_length=3)):
-    return menu + "を辛さ" + "普通" if spycy_lev == None else spycy_lev + "で予約しました。"
+@app.get('/banana')
+async def read_banana():
+    return "🍌が注文されました。"
+
+@app.get('/pineapple')
+async def read_pineapple():
+    return "🍍が注文されました。"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000)) # RenderはPORTを設定します
