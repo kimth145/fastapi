@@ -8,7 +8,14 @@ app = FastAPI()
 
 app.add_middleware(
 CORSMiddleware,
+# すべてのoriginを許可するように設定（実際の展開では必要に応じて変更）
 allow_origins=["*"],
+# Cookie使用設定
+allow_credentials=False, 
+# すべてのHTTPメソッドを許可するように設定
+allow_methods=["*"], 
+# すべてのヘッダーを許可するように設定
+allow_headers=["*"], 
 )
 
 @app.get('/')
