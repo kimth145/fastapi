@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>FastApiTest</title>
+  </head>
+
+  <script>
+    async function appleClick(color) {
+      const response = await fetch(
+        "https://fastapi-ex6d.onrender.com/order/apple?color=" + color
+      )
+      const result = await response.json()
+      document.getElementById("msg").innerHTML = result.msg
+    }
+  </script>
+
+  <body>
+    <button onclick="appleClick('red')">🍎</button>
+    <button onclick="appleClick('blue')">🍏</button>
+    <div id="msg"></div>
+  </body>
+</html>
